@@ -1,1 +1,1 @@
-# god.com
+# google.com
