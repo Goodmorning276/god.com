@@ -1,51 +1,71 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation and Giphy Example</title>
+    <title>Geolocation and Giphy</title>
     <script>
-        // Function to get user's geolocation
-        function showGeolocation() {
+        // Function to fetch the user's geolocation
+        function getGeolocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-                    document.getElementById("geo").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
-                }, function(error) {
-                    document.getElementById("geo").innerHTML = "Unable to retrieve location";
-                });
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
             } else {
-                document.getElementById("geo").innerHTML = "Geolocation is not supported by this browser.";
+                alert("Geolocation is not supported by this browser.");
             }
         }
 
-        // Function to get IP address using an external API (ipify API)
-        function getIpAddress() {
-            fetch('https://api.ipify.org?format=json')
+        function showPosition(position) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+            document.getElementById("geo-location").innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
+        }
+
+        function showError(error) {
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    alert("User denied the request for Geolocation.");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("Location information is unavailable.");
+                    break;
+                case error.TIMEOUT:
+                    alert("The request to get user location timed out.");
+                    break;
+                case error.UNKNOWN_ERROR:
+                    alert("An unknown error occurred.");
+                    break;
+            }
+        }
+
+        // Function to fetch IP address geolocation
+        function getIpAddressLocation() {
+            fetch('https://ipinfo.io/json?token=your_api_token_here') // You need to get a free token from ipinfo.io
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById("ip").innerHTML = `Your IP Address: ${data.ip}`;
+                    document.getElementById("ip-address-location").innerHTML = `IP Address: ${data.ip}<br>Location: ${data.city}, ${data.region}, ${data.country}`;
                 })
                 .catch(error => {
-                    document.getElementById("ip").innerHTML = "Unable to retrieve IP address";
+                    document.getElementById("ip-address-location").innerHTML = "Unable to fetch IP address location.";
                 });
         }
 
-        // Call both functions when the page is loaded
+        // Call geolocation functions on page load
         window.onload = function() {
-            showGeolocation();
-            getIpAddress();
+            getGeolocation();
+            getIpAddressLocation();
         }
     </script>
 </head>
 <body>
-    <h1>Visitor Information</h1>
-    <p id="geo">Loading geolocation...</p>
-    <p id="ip">Loading IP address...</p>
-
-    <h2>Giphy Embed:</h2>
-    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+    <h1>Geolocation and Giphy Example</h1>
+    
+    <!-- Giphy embed -->
+    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
     <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+    
+    <h2>Your Geolocation</h2>
+    <p id="geo-location">Fetching geolocation...</p>
+
+    <h2>Your IP Address Location</h2>
+    <p id="ip-address-location">Fetching IP address location...</p>
 </body>
-</html
+</html>
