@@ -1,32 +1,51 @@
 <!DOCTYPE html>
-<html>
-<body onload="getLocation()">
-<iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation and Giphy Example</title>
+    <script>
+        // Function to get user's geolocation
+        function showGeolocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    document.getElementById("geo").innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                }, function(error) {
+                    document.getElementById("geo").innerHTML = "Unable to retrieve location";
+                });
+            } else {
+                document.getElementById("geo").innerHTML = "Geolocation is not supported by this browser.";
+            }
+        }
 
-<p id="demo"></p> 
-  
-<script>
-const x = document.getElementById("demo");
+        // Function to get IP address using an external API (ipify API)
+        function getIpAddress() {
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("ip").innerHTML = `Your IP Address: ${data.ip}`;
+                })
+                .catch(error => {
+                    document.getElementById("ip").innerHTML = "Unable to retrieve IP address";
+                });
+        }
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition);
-  } else { 
-    x.innerHTML = "Geolocation is not supported by this browser.";
-  }
-}
+        // Call both functions when the page is loaded
+        window.onload = function() {
+            showGeolocation();
+            getIpAddress();
+        }
+    </script>
+</head>
+<body>
+    <h1>Visitor Information</h1>
+    <p id="geo">Loading geolocation...</p>
+    <p id="ip">Loading IP address...</p>
 
-function showPosition(position) {
-  x.innerHTML = "Latitude: " + position.coords.latitude + 
-  "<br>Longitude: " + position.coords.longitude;
-}
-</script>
-
+    <h2>Giphy Embed:</h2>
+    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+    <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
 </body>
-</html>
-
-
-
-
-
-
+</html
