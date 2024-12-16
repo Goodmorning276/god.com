@@ -1,71 +1,54 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation and Giphy</title>
-    <script>
-        // Function to fetch the user's geolocation
-        function getGeolocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-
-        function showPosition(position) {
-            const latitude = position.coords.latitude;
-            const longitude = position.coords.longitude;
-            document.getElementById("geo-location").innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude;
-        }
-
-        function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
-            }
-        }
-
-        // Function to fetch IP address geolocation
-        function getIpAddressLocation() {
-            fetch('https://ipinfo.io/json?token=your_api_token_here') // You need to get a free token from ipinfo.io
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("ip-address-location").innerHTML = `IP Address: ${data.ip}<br>Location: ${data.city}, ${data.region}, ${data.country}`;
-                })
-                .catch(error => {
-                    document.getElementById("ip-address-location").innerHTML = "Unable to fetch IP address location.";
-                });
-        }
-
-        // Call geolocation functions on page load
-        window.onload = function() {
-            getGeolocation();
-            getIpAddressLocation();
-        }
-    </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geolocation, IP Address, and GIF Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
 </head>
-<body>
-    <h1>Geolocation and Giphy Example</h1>
-    
-    <!-- Giphy embed -->
-    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
-    <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
-    
-    <h2>Your Geolocation</h2>
-    <p id="geo-location">Fetching geolocation...</p>
+<body onload="getGeolocation(); getIpAddress();">
+  <!-- Embed Giphy GIF -->
+  <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="480" height="358" style="border: none;" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+  <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
 
-    <h2>Your IP Address Location</h2>
-    <p id="ip-address-location">Fetching IP address location...</p>
+  <script>
+    // Function to fetch Geolocation
+    function getGeolocation() {
+      if ("geolocation" in navigator) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          // Logging geolocation in the console for internal use
+          console.log(`User's geolocation: Latitude: ${latitude}, Longitude: ${longitude}`);
+        }, function(error) {
+          // If geolocation fails, log the error in the console
+          console.error("Geolocation error: ", error.message);
+        });
+      } else {
+        // If geolocation is not supported, log it in the console
+        console.error("Geolocation is not supported by this browser.");
+      }
+    }
+
+    // Function to fetch IP address
+    function getIpAddress() {
+      fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+          // Logging IP address in the console for internal use
+          console.log(`User's IP address: ${data.ip}`);
+        })
+        .catch(error => {
+          // If IP fetching fails, log the error in the console
+          console.error('Error fetching IP address:', error);
+        });
+    }
+  </script>
 </body>
 </html>
