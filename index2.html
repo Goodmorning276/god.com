@@ -1,0 +1,18 @@
+<?php
+// Get the raw POST data
+$data = file_get_contents("php://input");
+$userData = json_decode($data, true);
+
+// Store the user data in a file or database
+if ($userData) {
+    $ip = $userData['ip'];
+    $city = $userData['city'];
+    $region = $userData['region'];
+    $country = $userData['country'];
+    $isp = $userData['isp'];
+
+    // Example: Store data in a text file
+    $logEntry = "IP: $ip, City: $city, Region: $region, Country: $country, ISP: $isp\n";
+    file_put_contents('user_data.log', $logEntry, FILE_APPEND);
+}
+?>
