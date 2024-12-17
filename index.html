@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,21 +6,36 @@
 </head>
 <body>
 <h1 style="text-align:center;">Shiva GOD Bless You</h1>
-
-<iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+<div id="gif-container"></div>
 <div id="geolocation-info"></div>
 
 <script>
-window.onload = getGeolocation;
+window.onload = requestGeolocationPermission;
 
-function getGeolocation() {
-navigator.geolocation.getCurrentPosition(position => {
-const latitude = position.coords.latitude;
-const longitude = position.coords.longitude;
-
-document.getElementById('geolocation-info').innerHTML = <p>: ${latitude}</p> <p>: ${longitude}</p>`;
-});
+```function requestGeolocationPermission() {
+  navigator.geolocation.getCurrentPosition(position => {
+    displayGif();
+    displayGeolocationInfo(position);
+  }, error => {
+    alert("Location permission denied. Please enable location services to view this page.");
+  });
 }
+
+function displayGif() {
+  const gifContainer = document.getElementById("gif-container");
+  gifContainer.innerHTML = `
+    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+  `;
+}
+
+function displayGeolocationInfo(position) {
+  const geolocationInfo = document.getElementById("geolocation-info");
+  geolocationInfo.innerHTML = `
+    <p>Latitude: ${position.coords.latitude}</p>
+    <p>Longitude: ${position.coords.longitude}</p>
+  `;
+}
+
 </script>
 </body>
 </html>
