@@ -1,9 +1,8 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
   <title>Oh Lord Shiva Blessing You</title>
   <style>
     body {
@@ -26,11 +25,11 @@
     }
   </style>
 </head>
-<body>
+<body onload="getLocation()">
   <header>
     <h1>GOOD MORNING Shiva Blessing You</h1>
   </header>
-  <main>
+  
   <iframe src="https://giphy.com/embed/r8vrqoqdRSykw" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/festival-r8vrqoqdRSykw">via GIPHY</a></p>
 
 
@@ -39,6 +38,23 @@
 
 <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
 
-  </main>
+ <p id="demo"></p>
+
+<script>
+var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude;
+}
+ </script> 
 </body>
-  </html>
+</html>
