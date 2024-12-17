@@ -1,70 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation and GIF</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
-        #geolocation {
-            font-size: 18px;
-            display: none;
-        }
-        #gif {
-            margin-top: 20px;
-        }
-        
-        #geolocation p {
-            display: none;
-        }
-    </style>
+<title>Shiva GOD Bless You</title>
 </head>
 <body>
-
-    <h1>Welcome to Shiva GOD</h1>
-
-    
-    <div id="geolocation">
-        <p>Your Location Information</p>
-        <p>Latitude: <span id="latitude"></span></p>
-        <p>Longitude: <span id="longitude"></span></p>
-    </div>
-
-
-    <div id="gif" style="display:none;">
-        <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" frameborder="0" class="giphy-embed" allowFullScreen></iframe>
-        <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII" style="display:none;">via GIPHY</a></p>
-    </div>
-
-    <script>
-        
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-
-            
-                document.getElementById('latitude').textContent = latitude;
-                document.getElementById('longitude').textContent = longitude;
-
-                
-                document.getElementById('geolocation').style.display = 'block';
-
-                
-                document.getElementById('gif').style.display = 'block';
-            }, function(error) {
-                alert("Geolocation access denied or failed. Please enable location services.");
-            });
-        } else {
-            alert("Geolocation is not supported by your browser.");
-        }
-    </script>
-
+<iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
 </body>
 </html>
