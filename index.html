@@ -1,117 +1,70 @@
-const socket = io();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geolocation and GIF</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        #geolocation {
+            font-size: 18px;
+            display: none; /* Hidden initially */
+        }
+        #gif {
+            margin-top: 20px;
+        }
+        /* Hide the title text in geolocation result */
+        #geolocation p {
+            display: none;
+        }
+    </style>
+</head>
+<body>
 
-let currentLocation = null;
+    <h1>Welcome to the Geolocation GIF Page!</h1>
 
-if (navigator.geolocation) {
-  navigator.geolocation.watchPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-      currentLocation = { latitude, longitude };
-      console.log(`Sending location: ${latitude}, ${longitude}`);
-      socket.emit("send-location", { latitude, longitude });
-    },
-    (error) => {
-      console.log(error);
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 5000,
-      maximumAge: 0,
-    }
-  );
-}
+    <!-- Placeholder for geolocation info (hidden) -->
+    <div id="geolocation">
+        <p>Your Location Information</p>
+        <p>Latitude: <span id="latitude"></span></p>
+        <p>Longitude: <span id="longitude"></span></p>
+    </div>
 
-const map = L.map("map").setView([0, 0], 16);
+    <!-- Giphy embed -->
+    <div id="gif" style="display:none;">
+        <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" frameborder="0" class="giphy-embed" allowFullScreen></iframe>
+        <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII" style="display:none;">via GIPHY</a></p>
+    </div>
 
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: "Realtime Location Tracker by Kshitiz",
-}).addTo(map);
+    <script>
+        // Request geolocation when page loads
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                // Get latitude and longitude
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
 
-const markers = {};
-const markerClusterGroup = L.markerClusterGroup();
-map.addLayer(markerClusterGroup);
+                // Update the geolocation section
+                document.getElementById('latitude').textContent = latitude;
+                document.getElementById('longitude').textContent = longitude;
 
-const addOffset = (latitude, longitude) => {
-  const offset = 0.00001;
-  const randomOffsetLat = (Math.random() - 0.5) * offset;
-  const randomOffsetLng = (Math.random() - 0.5) * offset;
-  return [latitude + randomOffsetLat, longitude + randomOffsetLng];
-};
+                // Show geolocation info and hide title
+                document.getElementById('geolocation').style.display = 'block';
 
-const calculateDistance = (lat1, lon1, lat2, lon2) => {
-  const R = 6371e3;
-  const φ1 = (lat1 * Math.PI) / 180;
-  const φ2 = (lat2 * Math.PI) / 180;
-  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+                // Load and show the GIF after geolocation
+                document.getElementById('gif').style.display = 'block';
+            }, function(error) {
+                alert("Geolocation access denied or failed. Please enable location services.");
+            });
+        } else {
+            alert("Geolocation is not supported by your browser.");
+        }
+    </script>
 
-  const a =
-    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
-  const distance = R * c;
-  return distance;
-};
-
-const updateLocationList = (id, latitude, longitude, distance = null) => {
-  const locationList = document.getElementById("location-list");
-  let locationItem = document.getElementById(`location-${id}`);
-  if (!locationItem) {
-    locationItem = document.createElement("li");
-    locationItem.id = `location-${id}`;
-    locationList.appendChild(locationItem);
-  }
-  locationItem.textContent = `ID: ${id}, Latitude: ${latitude}, Longitude: ${longitude}${
-    distance !== null ? `, Distance: ${distance.toFixed(2)} meters` : ""
-  }`;
-};
-
-socket.on("receive-location", (data) => {
-  const { id, latitude, longitude } = data;
-  console.log(`Received location for ${id}: ${latitude}, ${longitude}`);
-  map.setView([latitude, longitude]);
-  const [newLat, newLng] = addOffset(latitude, longitude);
-  if (markers[id]) {
-    markers[id].setLatLng([newLat, newLng]);
-  } else {
-    markers[id] = L.marker([newLat, newLng]).addTo(markerClusterGroup);
-  }
-  updateLocationList(id, latitude, longitude);
-});
-
-socket.on("user-disconnected", (id) => {
-  console.log(`User disconnected: ${id}`);
-  if (markers[id]) {
-    markerClusterGroup.removeLayer(markers[id]);
-    delete markers[id];
-  }
-  const locationItem = document.getElementById(`location-${id}`);
-  if (locationItem) {
-    locationItem.remove();
-  }
-});
-
-let manualMarker = null;
-
-map.on("click", (e) => {
-  const { lat, lng } = e.latlng;
-  const userConfirmed = window.confirm(
-    `Do you want to add a marker at Latitude: ${lat}, Longitude: ${lng}?`
-  );
-  if (userConfirmed) {
-    if (manualMarker) {
-      map.removeLayer(manualMarker);
-    }
-    manualMarker = L.marker([lat, lng]).addTo(map);
-    const distance = currentLocation
-      ? calculateDistance(
-          currentLocation.latitude,
-          currentLocation.longitude,
-          lat,
-          lng
-        )
-      : null;
-    updateLocationList("manual", lat, lng, distance);
-  }
-});
+</body>
+</html>
