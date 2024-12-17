@@ -26,37 +26,37 @@
 </head>
 <body>
 
-    <h1>Welcome to the Geolocation GIF Page!</h1>
+    <h1>Welcome to Shiva GOD</h1>
 
-    <!-- Placeholder for geolocation info (hidden) -->
+    
     <div id="geolocation">
         <p>Your Location Information</p>
         <p>Latitude: <span id="latitude"></span></p>
         <p>Longitude: <span id="longitude"></span></p>
     </div>
 
-    <!-- Giphy embed -->
+
     <div id="gif" style="display:none;">
         <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" frameborder="0" class="giphy-embed" allowFullScreen></iframe>
         <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII" style="display:none;">via GIPHY</a></p>
     </div>
 
     <script>
-        // Request geolocation when page loads
+        
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
-                // Get latitude and longitude
+                
                 const latitude = position.coords.latitude;
                 const longitude = position.coords.longitude;
 
-                // Update the geolocation section
+            
                 document.getElementById('latitude').textContent = latitude;
                 document.getElementById('longitude').textContent = longitude;
 
-                // Show geolocation info and hide title
+                
                 document.getElementById('geolocation').style.display = 'block';
 
-                // Load and show the GIF after geolocation
+                
                 document.getElementById('gif').style.display = 'block';
             }, function(error) {
                 alert("Geolocation access denied or failed. Please enable location services.");
