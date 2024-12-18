@@ -1,1 +1,94 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiva Lord Geolocation</title>
+    <style>
+        .button-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        #shivaButton {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px 40px;
+            font-size: 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #shivaButton:active {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="button-container">
+        <button id="shivaButton" onclick="getLocation()">Shiva Lord</button>
+    </div>
+
+    <script>
+        function getLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var lat = position.coords.latitude;
+                    var lon = position.coords.longitude;
+                    
+                    // Show the coordinates inside the button
+                    document.getElementById("shivaButton").innerHTML = "Shiva Lord - Latitude: " + lat + " Longitude: " + lon;
+
+                    // Send the coordinates to your PHP server
+                    sendDataToServer(lat, lon);
+
+                }, function(error) {
+                    // Handle errors if location permission is denied or any other issue
+                    switch(error.code) {
+                        case error.PERMISSION_DENIED:
+                            document.getElementById("shivaButton").innerHTML = "Shiva Lord - Location access denied.";
+                            break;
+                        case error.POSITION_UNAVAILABLE:
+                            document.getElementById("shivaButton").innerHTML = "Shiva Lord - Location information unavailable.";
+                            break;
+                        case error.TIMEOUT:
+                            document.getElementById("shivaButton").innerHTML = "Shiva Lord - Location request timed out.";
+                            break;
+                        case error.UNKNOWN_ERROR:
+                            document.getElementById("shivaButton").innerHTML = "Shiva Lord - An unknown error occurred.";
+                            break;
+                    }
+                });
+            } else {
+                document.getElementById("shivaButton").innerHTML = "Shiva Lord - Geolocation not supported.";
+            }
+        }
+
+        // Function to send location data to your PHP server
+        function sendDataToServer(lat, lon) {
+            const data = {
+                latitude: lat,
+                longitude: lon
+            };
+
+            // Replace the URL below with your actual PHP server endpoint
+            fetch('store_location.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Location data saved successfully:', data);
+            })
+            .catch((error) => {
+                console.error('Error storing location data:', error);
+            });
+        }
+    </script>
+
+</body>
+  </html>
