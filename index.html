@@ -4,12 +4,13 @@
     <title>Shiva Blessing You</title>
     <script>
         window.onload = function() {
+            getLocation();
             getIPAddress();
         };
 
         function getLocation() {
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError, {enableHighAccuracy: true});
+                navigator.geolocation.getCurrentPosition(showPosition, null, {enableHighAccuracy: true});
             } else { 
                 document.getElementById("location").innerHTML = "Geolocation is not supported by this browser.";
             }
@@ -21,29 +22,11 @@
             document.getElementById("location").innerHTML = lat + ", " + long;
         }
 
-        function showError(error) {
-            switch(error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
-            }
-        }
-
         function getIPAddress() {
-            fetch('https://ipinfo.io/json?token=<64222be50ce9f8>')
+            fetch('https://ipinfo.io/json?token=64222be50ce9f8')
             .then(response => response.json())
             .then(data => {
-                document.getElementById("ip").innerHTML = "IP Address: " + data.ip + 
-                " ISP: " + data.org;
+                document.getElementById("ip").innerHTML = "IP Address: " + data.ip + " ISP: " + data.org;
             })
             .catch(error => {
                 console.error("Error fetching the IP address:", error);
@@ -53,14 +36,9 @@
 </head>
 <body>
     <h1>Shiva Blessing You</h1>
-    <iframe src="https://giphy.com/embed/r8vrqoqdRSykw" width="2000" height="1600" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/festival-r8vrqoqdRSykw">via GIPHY</a></p>
-
-    <iframe src="https://giphy.com/embed/HzesnfU8YDl2E" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/chaturthi-ganesh-HzesnfU8YDl2E">via GIPHY</a></p>
-
-    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
-
-    <button onclick="getLocation()">Lord Shiva Blessing Your Home</button>
-    <p id="location" style="font-size: small; visibility: hidden;"></p>
-    <p id="ip" style="font-size: small; visibility: hidden;"></p>
+    <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+    <p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+    <p id="location" style="font-size: small; position: fixed; bottom: 0; right: 0;"></p>
+    <p id="ip" style="font-size: small; position: fixed; bottom: 0; right: 0;"></p>
 </body>
 </html>
