@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shiva Blessing You </h1>
+  <button id="get-blessing-btn">Get Blessing</button>
+  <p id="location"></p>
+  <script>
+    document.getElementById('get-blessing-btn').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          document.getElementById('location').innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        }, error => {
+          document.getElementById('location').innerHTML = 'Error getting location.';
+        });
+      } else {
+        document.getElementById('location').innerHTML = 'Geolocation is not supported by this browser.';
+      }
+    });
+  </script>
+</body>
+</html>
+```
+[18/12, 9:10 am] Meta AI: Here is the complete code with HTML, CSS, and JavaScript all in one file:
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Location</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #4CAF50;
+      color: #fff;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3e8e41;
+    }
+  </style>
+</head>
+<body>
+  <h1>Shiva Blessing You </h1>
+  <button id="get-blessing-btn">Get Blessing</button>
+  <iframe src="https://giphy.com/embed/r8vrqoqdRSykw" width="2000" height="1600" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/festival-r8vrqoqdRSykw">via GIPHY</a></p>
+
+
+  <iframe src="https://giphy.com/embed/HzesnfU8YDl2E" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/chaturthi-ganesh-HzesnfU8YDl2E">via GIPHY</a></p>
+
+
+  <iframe src="https://giphy.com/embed/5JsYK5W1g1lII" width="2000" height="1500" style="" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/rays-5JsYK5W1g1lII">via GIPHY</a></p>
+ 
+  <p id="location"></p>
+  <script>
+  document.getElementById('get-blessing-btn').addEventListener('click', () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          document.getElementById('location').innerHTML = `Latitude: ${latitude}, Longitude: ${longitude}`;
+        }, error => {
+          document.getElementById('location').innerHTML = 'Error getting location.';
+        });
+      } else {
+        document.getElementById('location').innerHTML = 'Geolocation is not supported by this browser.';
+      }
+    });
+  </script>
+</body>
+</html>
