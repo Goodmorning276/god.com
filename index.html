@@ -39,7 +39,7 @@
         }
 
         function getIPAddress() {
-            fetch('https://ipinfo.io/json?token=<YOUR_TOKEN_HERE>')
+            fetch('https://ipinfo.io/json?token=<64222be50ce9f8>')
             .then(response => response.json())
             .then(data => {
                 document.getElementById("ip").innerHTML = "IP Address: " + data.ip + 
